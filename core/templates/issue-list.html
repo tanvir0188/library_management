@@ -7,12 +7,22 @@
 
 {% block content %}
   <div class="container">
-  <a href="{% url 'core:issue-book' %}" class="btn btn-primary m-2 float-end">New issue</a>
+    
+    {% if user.is_authenticated and user.role == 1 %}
+      <a href="{% url 'core:issue-book' %}" class="btn btn-primary m-2 float-end">New issue</a>
+    {% endif %}
+      
+  
   <table class="table">
   <thead>
     <tr>
       <th scope="col">Title</th>
-      <th scope="col">Issued To</th>
+      
+      {% if user.role is 1 %}
+        <th scope="col">Issued To</th>
+      {% endif %}
+        
+      
       <th scope="col">Due date</th>
       <th scope="col">Return date</th>
       {% if user.role is 1 %}
@@ -25,7 +35,9 @@
     {% for book_issue in page_obj %}
     <tr>
       <td>{{book_issue.book}}</td>
+      {% if user.role is 1 %}
       <td>{{book_issue.member}}</td>
+      {% endif %}
       <td>{{book_issue.due_date}}</td>
       <td>
         
@@ -37,9 +49,17 @@
         
           
       </td>
-      {% if user.role is 1 %}
-        <td><a href="#">Update</a></th>
+      {% if user.role == 1 %}
+        <td data-id="{{ book_issue.id }}">
+          {% if not book_issue.return_date %}
+            <button class="btn btn-secondary">Update</button>
+          {% else %}
+            <button class="btn btn-secondary disabled">Update</button>
+          {% endif %}
+        </td>
       {% endif %}
+
+
     </tr>
     {% endfor %}
     
@@ -102,5 +122,38 @@
     </li>
   {% endif %}
 </ul>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('.btn-secondary').on('click', function () {
+   const row = $(this).closest('td');
+   const bookIssueId = row.data('id');
+
+   const confirmReturn = confirm('Are you sure you want to mark this book as returned and set today as the return date?');
+
+   if (!confirmReturn) return;
+
+   $.ajax({
+     url: `api/update-return-date/${bookIssueId}`,
+     type: 'GET',
+     dataType: 'json',
+     success: function (response) {
+       if (response.success) {
+         alert(response.message);
+         // Update the DOM with return date
+         window.location.reload();
+       } else {
+         alert('Update failed: ' + response.message);
+       }
+     },
+     error: function (xhr) {
+       alert(xhr.message);
+     }
+   });
+} );
+
+  });
+</script>
+
 {% endblock content %}
   

@@ -7,7 +7,9 @@ from django.views.generic import CreateView, ListView, UpdateView
 from .forms import BookForm, BookIssueForm, ProfileForm, UserRegisterForm
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from django.utils import timezone
+
 # Create your views here.
 
 def member_register(request):
@@ -117,8 +119,31 @@ class BookIssueListView(LoginRequiredMixin, AdminNotAllowed, ListView):
   paginate_by = 10
   template_name='issue-list.html'
   ordering = ['return_date']
-  login_url='core:login'  
+  login_url='core:login'
+  def get_queryset(self):
+    if self.request.user.role == 2:
+      return BookIssue.objects.filter(member=self.request.user).order_by('return_date')  
+    return BookIssue.objects.all().order_by('return_date')
 
+def update_return_date(request, pk):
+  try:
+    issue = BookIssue.objects.get(id=pk)
+
+    issue.return_date = timezone.now().date()
+    issue.is_returned = True
+    book = issue.book
+    book.available_copies = min(book.total_copies, book.available_copies+1)
+    book.save()
+    issue.save()
+
+    return JsonResponse({
+      'success': True,
+      'message': f'Return date updated for {issue.book.title}',
+      'return_date': issue.return_date,
+    })
+
+  except BookIssue.DoesNotExist:
+    return JsonResponse({'success': False, 'message': 'Book issue not found'}, status=404)
 
 
 
