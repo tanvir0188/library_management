@@ -57,7 +57,7 @@ class Book(models.Model):
       
   
 class BookIssue(models.Model):
-  member = models.ForeignKey('User', on_delete=models.SET_NULL, null=True, related_name='book_issue_member')
+  member = models.ForeignKey('User', on_delete=models.SET_NULL, null=True, related_name='book_issue_member',  limit_choices_to={'role': '2'})
   book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
   issued_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='book_issue_librarian')
   issue_date = models.DateField(blank=False, auto_now_add=True)

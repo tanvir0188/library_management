@@ -1,27 +1,44 @@
-{% extends 'base/base.html' %} {% block title %} Homepage {% endblock title %}
+{% extends 'base/base.html' %}
+
+{% block title %}
+  Issue list
+{% endblock title %}
+
+
 {% block content %}
-<div class="container">
+  <div class="container">
+  <a href="{% url 'core:issue-book' %}" class="btn btn-primary m-2 float-end">New issue</a>
   <table class="table">
   <thead>
     <tr>
       <th scope="col">Title</th>
-      <th scope="col">Author</th>
-      <th scope="col">Available copies</th>
-      
+      <th scope="col">Issued To</th>
+      <th scope="col">Due date</th>
+      <th scope="col">Return date</th>
       {% if user.role is 1 %}
-        <th scope="col">Action</th>
+        <th scope="col">Manage</th>
       {% endif %}
         
     </tr>
   </thead>
   <tbody>
-    {% for book in page_obj %}
+    {% for book_issue in page_obj %}
     <tr>
-      <td>{{book.title}}</td>
-      <td>{{book.author}}</td>
-      <td>{{book.available_copies}}</td>
+      <td>{{book_issue.book}}</td>
+      <td>{{book_issue.member}}</td>
+      <td>{{book_issue.due_date}}</td>
+      <td>
+        
+        {% if book_issue.return_date is None %}
+          Not returned
+        {% else %}
+        {{book_issue.return_date}}
+        {% endif %}
+        
+          
+      </td>
       {% if user.role is 1 %}
-        <td><a href="#">Delete</a></th>
+        <td><a href="#">Update</a></th>
       {% endif %}
     </tr>
     {% endfor %}
@@ -85,7 +102,5 @@
     </li>
   {% endif %}
 </ul>
-
-
-
 {% endblock content %}
+  

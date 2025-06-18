@@ -137,12 +137,25 @@
           <ul class="navbar-nav ms-auto d-flex flex-row mt-3 mt-lg-0">
             <li class="nav-item text-center mx-2 mx-lg-1">
               {% if user.is_authenticated and not user.is_staff%}
-              {{user.username}} {% else %}
+              <a class="nav-link" href="{% url 'core:profile-update' user.username%}">{{user.username}}</a>
+               {% else %}
               <a class="nav-link" href="{% url 'core:login' %}"> Login </a>
 
               {% endif %}
             </li>
-
+            {% if user.is_authenticated and user.role == 1 %}
+            <li class="nav-item text-center mx-2 mx-lg-1">
+              <a class="nav-link" href="{% url 'core:add-book' %}"> Add book </a>
+            </li>
+            <li class="nav-item text-center mx-2 mx-lg-1">
+              <a class="nav-link" href="{% url 'core:issue-list' %}"> Issued books </a>
+            </li>
+            {% endif %}
+            {% if user.is_authenticated and user.role == 2 %}
+            <li class="nav-item text-center mx-2 mx-lg-1">
+              <a class="nav-link" href="{% url 'core:issue-list' %}"> Issued books </a>
+            </li>
+            {% endif %}
             {% if user.is_authenticated and not user.is_staff %}
             <li class="nav-item text-center mx-2 mx-lg-1">
               <form action="{% url 'logout' %}" method="post">
