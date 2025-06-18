@@ -28,6 +28,19 @@ class User(AbstractUser):
       self.role = 0
     super().save(*args, **kwargs)
 
+class Profile(models.Model):
+  user = models.OneToOneField(User, on_delete=models.CASCADE)
+  full_name =  models.CharField(max_length=255, null=True, blank=True)
+  image = models.ImageField(blank=True, null=True, upload_to='uploads/profile')
+  address = models.CharField(null=True, blank=True, max_length=255)
+  
+  def __str__(self):
+    if self.full_name:
+      return self.full_name
+    return self.user.username 
+  
+  
+
 class Book(models.Model):
   title = models.CharField(max_length=255, blank=False)
   author = models.CharField(max_length=200, blank=True)
