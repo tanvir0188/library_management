@@ -39,7 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core.apps.CoreConfig',
     'bootstrap5',
+    'crispy_forms',
+    'crispy_bootstrap5',
+
 ]
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -70,8 +74,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'library_management.wsgi.application'
 
-LOGIN_REDIRECT_URL = "/core/"
-LOGOUT_REDIRECT_URL="/core/register"
+LOGIN_REDIRECT_URL = "/core/index"
+LOGOUT_REDIRECT_URL="/core/login"
+LOGIN_URL = "/core/login"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 

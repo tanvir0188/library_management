@@ -1,5 +1,5 @@
 {% extends 'base/base.html' %} {% load crispy_forms_tags %} {% block title %}
-Register {% endblock title %} {% block content %}
+Login {% endblock title %} {% block content %}
 <h1 class="text-center">Register</h1>
   <div class="container">
     <form
@@ -23,16 +23,16 @@ Register {% endblock title %} {% block content %}
           "
           type="submit"
         >
-          <span class="glyphicon glyphicon-check"></span>   Sign Up
+          <span class="glyphicon glyphicon-check"></span>   Login
         </button>
       </center>
       <br />
       <sub>
         <a
-          href="{% url 'core:login' %}"
+          href="{% url 'core:register' %}"
           style="text-decoration: none; color: blue"
         >
-          Already have an account?
+          Don't have an account?
         </a>
       </sub>
     </form>
