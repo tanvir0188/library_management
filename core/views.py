@@ -65,6 +65,8 @@ class BookListView(LoginRequiredMixin,AdminNotAllowed, ListView):
   ordering = ['created_at']
   login_url='core:login'
 
+
+
 class ProfileUpdateView(LoginRequiredMixin, AdminNotAllowed, UpdateView):
   model = Profile
   form_class = ProfileForm

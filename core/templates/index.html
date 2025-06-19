@@ -6,12 +6,7 @@
     <tr>
       <th scope="col">Title</th>
       <th scope="col">Author</th>
-      <th scope="col">Available copies</th>
-      
-      {% if user.role is 1 %}
-        <th scope="col">Action</th>
-      {% endif %}
-        
+      <th scope="col">Available copies</th>        
     </tr>
   </thead>
   <tbody>
@@ -20,9 +15,6 @@
       <td>{{book.title}}</td>
       <td>{{book.author}}</td>
       <td>{{book.available_copies}}</td>
-      {% if user.role is 1 %}
-        <td><a href="#">Delete</a></th>
-      {% endif %}
     </tr>
     {% endfor %}
     

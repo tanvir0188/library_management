@@ -71,6 +71,7 @@ class BookIssue(models.Model):
     if self.is_returned == True and self.return_date is None:
       self.return_date = timezone.now().date()
     super().save(*args, **kwargs)
-  
+
+
 
   
