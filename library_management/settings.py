@@ -54,6 +54,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+CSRF_TRUSTED_ORIGINS = [
+    'https://library-management-i3gf.onrender.com',
+]
 
 ROOT_URLCONF = 'library_management.urls'
 AUTH_USER_MODEL='core.User'
